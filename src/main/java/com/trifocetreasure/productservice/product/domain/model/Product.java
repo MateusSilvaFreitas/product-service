@@ -1,5 +1,6 @@
 package com.trifocetreasure.productservice.product.domain.model;
 
+import com.trifocetreasure.productservice.product.application.commands.CreateProductCommand;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,12 +20,14 @@ public class Product {
     private List<String> productImages;
     //TODO: add the store reference
 
-    public Product(String name, String description, Value value, Integer quantity, List<String> productImages) {
-        this.id = UUID.randomUUID().toString();
-        this.name = name;
-        this.description = description;
-        this.value = value;
-        this.quantity = quantity;
-        this.productImages = productImages;
+    public static Product createByCommand(CreateProductCommand createProductCommand) {
+        return Product.builder()
+                .id(UUID.randomUUID().toString())
+                .name(createProductCommand.name())
+                .description(createProductCommand.description())
+                .value(new Value(createProductCommand.value()))
+                .quantity(createProductCommand.quantity())
+                .productImages(createProductCommand.productImages())
+                .build();
     }
 }
